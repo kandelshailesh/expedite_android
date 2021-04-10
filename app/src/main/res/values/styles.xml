@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Expedite.Input" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxBackgroundMode">filled</item>
+        <item name="boxStrokeColor">@color/white</item>
+        <item name="errorEnabled">false</item>
+        <item name="hintTextColor">@color/black</item>
+    </style>
+
+</resources>
