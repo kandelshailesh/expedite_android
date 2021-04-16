@@ -10,4 +10,12 @@
         android:id="@+id/action_logout"
         android:title="Logout"
         ></item>
+    <item
+        android:title=""
+        app:showAsAction="always"
+        android:id="@+id/searchToolbar"
+        android:iconTintMode="add"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:icon="@drawable/ic_search">
+    </item>
 </menu>

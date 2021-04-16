@@ -29,4 +29,16 @@
         android:label="Blogs"
         tools:layout="@layout/fragment_blog" />
 
+    <fragment
+        android:id="@+id/nav_item_cart"
+        tools:layout="@layout/fragment_cart"
+        android:name="com.example.basic.ui.ProductCartFragment"/>
+
+    <fragment android:id="@+id/nav_cart"
+        tools:layout="@layout/fragment_maincart"
+        android:name="com.example.basic.ui.MainCartFragment"
+        android:label="Cart"
+        ></fragment>
+
+
 </navigation>

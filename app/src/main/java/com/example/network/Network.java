@@ -12,7 +12,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class Network {
     public Retrofit getRetrofit() {
         Retrofit retrofit = new Retrofit.Builder().
-
                 baseUrl(BuildConfig.API_URL).
                 addConverterFactory(ScalarsConverterFactory.create()).
                 addConverterFactory(GsonConverterFactory.create())
