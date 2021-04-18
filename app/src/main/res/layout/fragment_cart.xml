@@ -8,9 +8,19 @@
     android:background="#EEEEEE"
     tools:context=".ui.ProductCartFragment"
     android:padding="5dp">
+    <ProgressBar
+        android:id="@+id/product_progess"
+        style="?android:attr/progressBarStyleLarge"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:indeterminateTint="@color/amount"
+        android:layout_gravity="center"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_weight="0.7"
+        android:id="@+id/cart_scrollview"
+        android:visibility="gone"
         android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="vertical"
@@ -91,6 +101,7 @@
                         >
                     </ImageButton>
                     <EditText
+                        android:enabled="false"
                         android:layout_width="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_height="wrap_content"
@@ -125,6 +136,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:gravity="center|bottom"
+        android:id="@+id/cart_bottom"
+        android:visibility="gone"
         android:layout_height="wrap_content">
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -153,6 +166,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:id="@+id/cartBtn"
+                    android:clickable="true"
                     android:backgroundTint="@color/amount"
                     android:text="ADD TO CART"></Button>
             </LinearLayout>

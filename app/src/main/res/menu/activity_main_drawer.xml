@@ -2,29 +2,38 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-
-    <group  android:checkableBehavior="single">
+    <group android:id="@+id/group1"  android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/icon_home"
             android:title="@string/menu_home"
             />
-        <item
-            android:id="@+id/nav_products"
-            android:icon="@drawable/icon_product"
-            android:title="Products" />
+    </group>
+
+    <group android:id="@id/group5">
         <item
             android:id="@+id/nav_cart"
             android:icon="@drawable/ic_cart"
             android:title="Cart" />
+    </group>
+
+    <group android:id="@+id/group3">
         <item
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Orders" />
+            android:title="Track My Order" />
+    </group>
+    <group android:id="@+id/group4">
         <item
             android:id="@+id/nav_subscriptions"
             android:icon="@drawable/ic_subscription"
             android:title="Subscriptions" />
     </group>
 
+    <group android:id="@id/group6">
+        <item
+            android:id="@+id/nav_doctors"
+            android:icon="@drawable/ic_icon_doctor"
+            android:title="Doctors" />
+    </group>
 </menu>

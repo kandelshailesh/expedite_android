@@ -1,5 +1,8 @@
-package com.example.basic.ui.home;
 
+package com.example.basic.ui;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,19 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.adapters.CategoryAdapter;
+import com.example.adapters.CartAdapter;
+import com.example.adapters.DoctorAdapter;
 import com.example.basic.R;
-import com.example.interfaces.CategoryInterface;
+import com.example.interfaces.DoctorInterface;
+import com.example.interfaces.OrderInterface;
 import com.example.models.ApiError;
 import com.example.models.ErrorUtils;
 import com.example.network.Network;
@@ -36,18 +38,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class HomeFragment extends Fragment {
+public class DoctorFragment extends Fragment {
     TextView result;
     RecyclerView recyclerView;
     ProgressBar progressBar;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        result = root.findViewById(R.id.category_result);
-        recyclerView= root.findViewById(R.id.rvCategory);
-        progressBar= root.findViewById(R.id.home_progress);
-        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_navigation);
-        navBar.setVisibility(container.VISIBLE);
+        View root = inflater.inflate(R.layout.fragment_doctor, container, false);
+        result = root.findViewById(R.id.doctor_result);
+        recyclerView = root.findViewById(R.id.rvCart);
+        progressBar =root.findViewById(R.id.doctor_progress);
         return root;
     }
 
@@ -56,37 +57,40 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Retrofit retrofit = new Network().getRetrofit1();
-        CategoryInterface jsonPlaceholder = retrofit.create(CategoryInterface.class);
-        Call<ResponseBody> call = jsonPlaceholder.fetch("true");
+        DoctorInterface jsonPlaceholder = retrofit.create(DoctorInterface.class);
+        Call<ResponseBody> call = jsonPlaceholder.fetch();
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 progressBar.setVisibility(View.GONE);
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     try {
-                        result.setVisibility(View.GONE);
-                        String re= response.body().string();
+                        String re = response.body().string();
                         JSONObject obj = new JSONObject(re);
-                        CategoryAdapter myAdapter = new CategoryAdapter(getContext(), obj.getJSONArray("DATA"));
-                        recyclerView.setAdapter(myAdapter);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        Log.d("Orders", obj.toString());
+                        if (obj.getJSONArray("DATA").length() > 0) {
+                            result.setVisibility(View.GONE);
+                            DoctorAdapter myAdapter = null;
+                            myAdapter = new DoctorAdapter(getContext(), obj.getJSONArray("DATA"));
+                            recyclerView.setAdapter(myAdapter);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        } else {
+                            result.setVisibility(View.VISIBLE);
+                        }
                     } catch (IOException | JSONException e) {
                         e.printStackTrace();
                     }
-                }
-                else
-                {
-                    result.setVisibility(View.VISIBLE);
+                } else {
                     ApiError error = ErrorUtils.parseError(retrofit, response);
-                    Log.d("Error",error.getError());
-                    Toast.makeText(getActivity(),error.getError(),Toast.LENGTH_SHORT).show();
+                    Log.d("Error", error.getError());
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                progressBar.setVisibility(View.GONE);
-                result.setText(t.getMessage());
             }
         });
+
     }
+
 }

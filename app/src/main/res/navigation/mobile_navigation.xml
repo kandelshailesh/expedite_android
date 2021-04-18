@@ -40,5 +40,38 @@
         android:label="Cart"
         ></fragment>
 
+    <fragment android:id="@+id/nav_doctors"
+        tools:layout="@layout/fragment_doctor"
+        android:name="com.example.basic.ui.DoctorFragment"
+        android:label="Doctors"
+        ></fragment>
 
+    <fragment android:id="@+id/nav_order_details"
+        tools:layout="@layout/fragment_orders_details"
+        android:name="com.example.basic.ui.OrderDetailsFragment"
+        android:label="Order Details">
+    </fragment>
+
+    <fragment android:id="@+id/nav_orders"
+        tools:layout="@layout/fragment_orders"
+        android:name="com.example.basic.ui.OrderFragment"
+        android:label="Orders"></fragment>
+
+    <fragment android:id="@+id/nav_checkout"
+        tools:layout="@layout/fragment_checkout"
+        android:name="com.example.basic.ui.CheckoutFragment"
+        android:label="Checkout"></fragment>
+
+    <fragment android:id="@+id/nav_create_subscription"
+        tools:layout="@layout/fragment_item_subscription"
+        android:name="com.example.basic.ui.SubscriptionCreateFragment"
+        android:label="Item subscription ">
+    </fragment>
+
+    <fragment  android:id="@+id/nav_subscriptions"
+        android:label="Subscribed Items"
+        tools:layout="@layout/fragment_subscription"
+        android:name="com.example.basic.ui.SubscriptionFragment"
+        >
+    </fragment>
 </navigation>

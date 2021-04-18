@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.adapters.CartAdapter;
@@ -54,6 +58,9 @@ public class ProductCartFragment extends Fragment {
     Button cartBtn, subscribeBtn;
     Double gross_amount = 0.0, discount = 0.0, shipping_charge = 0.0, total_amount = 0.0;
     JSONObject orderData = new JSONObject();
+    ProgressBar progressBar;
+    ScrollView scrollView;
+    LinearLayout linearLayout;
 
     public ProductCartFragment() {
         // Required empty public constructor
@@ -77,17 +84,20 @@ public class ProductCartFragment extends Fragment {
         quantity = view.findViewById(R.id.cart_quantity);
         cartBtn = view.findViewById(R.id.cartBtn);
         subscribeBtn = view.findViewById(R.id.subscribeBtn);
+        progressBar = view.findViewById(R.id.product_progess);
+        scrollView = view.findViewById(R.id.cart_scrollview);
+        linearLayout = view.findViewById(R.id.cart_bottom);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(bundle.getString("name"));
         ;
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_navigation);
-        navBar.setVisibility(View.VISIBLE);
-    }
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_navigation);
+//        navBar.setVisibility(View.VISIBLE);
+//    }
 
 
     @Override
@@ -107,23 +117,7 @@ public class ProductCartFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-
         a.fetchOrder(user_id);
-        if (bundle != null) {
-            Log.d("Bundle", bundle.toString());
-            String name1 = bundle.get("name").toString();
-            String description1 = bundle.get("description").toString();
-            String imageUrl1 = bundle.get("imageUrl").toString();
-            String cost1 = bundle.get("price").toString();
-            min_quantity = bundle.getInt("min_quantity");
-            max_quantity = bundle.getInt("max_quantity");
-            name.setText(name1);
-            cost.setText("Rs " + cost1);
-            description.setText(description1);
-            Picasso.with(getView().getContext()).load(Uri.parse(imageUrl1)).into(image);
-            quantity.setText(Integer.toString(min_quantity));
-        }
-
         Retrofit retrofit = new Network().getRetrofit1();
         OrderInterface jsonPlaceholder = retrofit.create(OrderInterface.class);
         Call<ResponseBody> call = jsonPlaceholder.fetch(user_id);
@@ -131,6 +125,22 @@ public class ProductCartFragment extends Fragment {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+
+                    if (bundle != null) {
+                        Log.d("Bundle", bundle.toString());
+                        String name1 = bundle.get("name").toString();
+                        String description1 = bundle.get("description").toString();
+                        String imageUrl1 = bundle.get("imageUrl").toString();
+                        String cost1 = bundle.get("price").toString();
+                        min_quantity = bundle.getInt("min_quantity");
+                        max_quantity = bundle.getInt("max_quantity");
+                        name.setText(name1);
+                        cost.setText("Rs " + cost1);
+                        description.setText(description1);
+                        Picasso.with(getView().getContext()).load(Uri.parse(imageUrl1)).into(image);
+                        quantity.setText(Integer.toString(min_quantity));
+                    }
+
                     try {
                         String re = response.body().string();
                         JSONObject obj = new JSONObject(re);
@@ -148,6 +158,9 @@ public class ProductCartFragment extends Fragment {
                                 }
                             }
                         }
+                        scrollView.setVisibility(View.VISIBLE);
+                        linearLayout.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     } catch (IOException | JSONException e) {
                         e.printStackTrace();
                     }
@@ -166,7 +179,8 @@ public class ProductCartFragment extends Fragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Integer.parseInt(quantity.getText().toString()) <= max_quantity && Integer.parseInt(quantity.getText().toString()) >= min_quantity) {
+
+                if (Integer.parseInt(quantity.getText().toString()) < max_quantity && Integer.parseInt(quantity.getText().toString()) >= min_quantity) {
                     quantity.setText(Integer.toString(Integer.parseInt(quantity.getText().toString()) + 1));
                 } else {
                     Toast.makeText(getContext(), "Maximum quantity limit ", Toast.LENGTH_SHORT).show();
@@ -189,12 +203,14 @@ public class ProductCartFragment extends Fragment {
         cartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cartBtn.setAlpha(0.5f);
+                cartBtn.setEnabled(false);
                 try {
                     Integer product_id = bundle.getInt("product_id");
                     Integer quantity1 = Integer.parseInt(quantity.getText().toString());
                     Double price = Double.parseDouble(bundle.get("price").toString());
                     Integer user_id = finalUser_id;
-                    if (orderData != null && orderData.length() > 0) {
+                    if (orderData != null && orderData.has("orders_items") && orderData.getJSONArray("orders_items").length() > 0) {
                         JSONArray a = orderData.getJSONArray("orders_items");
                         gross_amount = orderData.getDouble("gross_amount");
                         discount = orderData.getDouble("discount");
@@ -217,16 +233,14 @@ public class ProductCartFragment extends Fragment {
                             b.remove("quantity");
                             b.put("quantity", quantity1);
                             gross_amount = gross_amount - prev_quantity * price + quantity1 * price;
-                            total_amount = gross_amount;
-                            a.put(i, b);
                         } else {
                             b.put("product_id", product_id);
                             b.put("quantity", quantity1);
                             b.put("price", price);
                             gross_amount = gross_amount + quantity1 * price;
-                            total_amount = gross_amount;
-                            a.put(i, b);
                         }
+                        total_amount = gross_amount;
+                        a.put(i, b);
                         orderData.put("gross_amount", gross_amount);
                         orderData.put("total_amount", total_amount);
                         orderData.put("status", "PENDING");
@@ -237,13 +251,14 @@ public class ProductCartFragment extends Fragment {
                         call.enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                cartBtn.setEnabled(true);
                                 if (response.isSuccessful()) {
                                     try {
+                                        Toast.makeText(getContext(), "Added to cart successfully", Toast.LENGTH_LONG).show();
                                         String re = response.body().string();
-                                        JSONObject obj = new JSONObject(re);
-                                        orderData = obj.getJSONObject("DATA");
-                                        Log.d("Order", orderData.toString());
-                                    } catch (IOException | JSONException e) {
+                                        Log.d("Order", re);
+                                        Navigation.findNavController(getView()).navigate(R.id.nav_cart);
+                                    } catch (IOException e) {
                                         e.printStackTrace();
                                     }
                                 } else {
@@ -283,6 +298,7 @@ public class ProductCartFragment extends Fragment {
                                         Toast.makeText(getContext(), "Added to cart successfully", Toast.LENGTH_LONG).show();
                                         String re = response.body().string();
                                         Log.d("Order", re);
+                                        Navigation.findNavController(getView()).navigate(R.id.nav_cart);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -305,6 +321,16 @@ public class ProductCartFragment extends Fragment {
                     Toast.makeText(getContext(), "Error in adding to cart", Toast.LENGTH_LONG).show();
 
                 }
+            }
+        });
+
+        subscribeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle1 =new Bundle();
+                bundle1.putInt("id",bundle.getInt("product_id"));
+                bundle1.putString("name",bundle.getString("name"));
+                Navigation.findNavController(getView()).navigate(R.id.nav_create_subscription,bundle1);
             }
         });
     }

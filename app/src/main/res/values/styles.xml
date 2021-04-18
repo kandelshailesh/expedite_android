@@ -9,4 +9,9 @@
         <item name="hintTextColor">@color/black</item>
     </style>
 
+    <style name="NavigationView" >
+        <item name="android:listDivider">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
 </resources>

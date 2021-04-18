@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#EEEEEE"
+    tools:context=".ui.DoctorFragment"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="10dp">
+    <ProgressBar
+        android:id="@+id/doctor_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:indeterminateTint="@color/amount"
+       android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:id="@+id/doctor_result"
+        android:visibility="gone"
+        android:text="No any doctors in the list"
+        android:layout_height="match_parent">
+
+    </TextView>
+       <androidx.recyclerview.widget.RecyclerView
+           android:layout_width="match_parent"
+           android:id="@+id/rvDoctor"
+           android:layout_height="match_parent">
+       </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>

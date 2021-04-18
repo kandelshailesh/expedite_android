@@ -24,4 +24,12 @@ public interface OrderInterface {
     @POST("api/backend/v1/orders")
     Call<ResponseBody> create(@Body String data);
 
+    @Headers("Content-Type: application/json")
+    @GET("api/backend/v1/success_orders")
+    Call<ResponseBody> fetchSuccess(@Query("user_id") Integer  user_id);
+
+    @Multipart
+    @POST("api/backend/v1/orders/checkout")
+    Call<ResponseBody> checkout(@PartMap Map<String, RequestBody> params);
+
 }
