@@ -35,6 +35,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="required">Required</string>
+    <string name="old_password">Enter current password</string>
+    <string name="new_password">Enter new password</string>
+    <string name="invalid_email">Please enter valid email</string>
+    <string name="invalid_fullname">Please enter valid name</string>
+    <string name="invalid_phone">Please enter valid no.</string>
 
 
 </resources>

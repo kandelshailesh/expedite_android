@@ -85,7 +85,6 @@ AwesomeValidation awesomeValidation;
                 public void onClick(View view) {
                     loginBtn.setEnabled(false);
                     if (awesomeValidation.validate()) {
-                        Toast.makeText(getApplicationContext(), "Valid data", Toast.LENGTH_SHORT).show();
                         Login();
                     } else {
                         Toast.makeText(getApplicationContext(), "Enter valid information", Toast.LENGTH_SHORT).show();

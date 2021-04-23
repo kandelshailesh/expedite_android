@@ -36,4 +36,10 @@
             android:icon="@drawable/ic_icon_doctor"
             android:title="Doctors" />
     </group>
+    <group android:id="@id/group7">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/icon_logout"
+            android:title="Logout" />
+    </group>
 </menu>

@@ -32,6 +32,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:orientation="vertical"
+                android:layout_weight="0.3"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="wrap_content"
@@ -53,16 +54,34 @@
                     android:id="@+id/ordered_date"
                     android:text="Placed on: 2021-05-20"></TextView>
             </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="right"
                 android:padding="10dp"
                 android:textSize="20dp"
+                android:id="@+id/order_total_amount"
                 android:textColor="@color/amount"
                 android:text="Total: Rs.650">
             </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:id="@+id/order_status"
+                android:padding="10dp"
+                android:textSize="20dp"
+
+                android:textColor="@color/amount"
+                android:text="PENDING">
+            </TextView>
+        </LinearLayout>
+
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
     <androidx.recyclerview.widget.RecyclerView

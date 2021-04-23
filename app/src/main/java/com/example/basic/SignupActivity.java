@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,6 +24,8 @@ import com.example.models.ErrorUtils;
 import com.example.models.users.Register;
 import com.example.network.Network;
 import com.google.gson.Gson;
+
+import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -51,14 +54,16 @@ public class SignupActivity extends AppCompatActivity {
         signupBtn= findViewById(R.id.signupBtn);
         AwesomeValidation awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         awesomeValidation.addValidation(this,R.id.fullName, RegexTemplate.NOT_EMPTY,R.string.fullName);
+        awesomeValidation.addValidation(this, R.id.fullName, "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.invalid_fullname);
         awesomeValidation.addValidation(this,R.id.email, RegexTemplate.NOT_EMPTY,R.string.email);
+        awesomeValidation.addValidation(this,R.id.email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
         awesomeValidation.addValidation(this,R.id.username, RegexTemplate.NOT_EMPTY,R.string.username);
         awesomeValidation.addValidation(this,R.id.password, RegexTemplate.NOT_EMPTY,R.string.password);
         awesomeValidation.addValidation(this,R.id.cpassword, R.id.password,R.string.cpassword);
         awesomeValidation.addValidation(this,R.id.phone, RegexTemplate.NOT_EMPTY,R.string.phone);
+        awesomeValidation.addValidation(this, R.id.phone, "^[2-9]{2}[0-9]{8}$", R.string.invalid_phone);
         awesomeValidation.addValidation(this,R.id.address, RegexTemplate.NOT_EMPTY,R.string.address);
         awesomeValidation.addValidation(this,R.id.gender, RegexTemplate.NOT_EMPTY,R.string.gender);
-
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,7 +89,7 @@ public class SignupActivity extends AppCompatActivity {
     {
         Retrofit retrofit = new Network().getRetrofit();
         Users users = retrofit.create(Users.class);
-        Call<ResponseBody> call = users.signup(fullName.getText().toString(),username.getText().toString(),email.getText().toString(),password.getText().toString(),phone.getText().toString(),address.getText().toString(),((RadioButton)findViewById(gender.getCheckedRadioButtonId())).getText().toString().toLowerCase());
+        Call<ResponseBody> call = users.signup(fullName.getText().toString(),username.getText().toString(),email.getText().toString(),password.getText().toString(),phone.getText().toString(),address.getText().toString(),((RadioButton)findViewById(gender.getCheckedRadioButtonId())).getText().toString().toLowerCase(),false);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -104,7 +109,6 @@ public class SignupActivity extends AppCompatActivity {
                     signupBtn.setEnabled(true);
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t)
             {

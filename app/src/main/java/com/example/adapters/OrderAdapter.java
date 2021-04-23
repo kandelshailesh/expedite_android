@@ -28,6 +28,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder> {
     Context context;
     JSONArray category;
@@ -55,7 +59,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             Integer orderId = a.getInt("id");
             String orderDate = a.getString("ordered_date");
             holder.orderId.setText("Order ID: #"+orderId);
-            holder.orderedDate.setText(orderDate.toString());
+            DateTimeFormatter formatter =
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+            LocalDateTime date = LocalDateTime.parse(orderDate, formatter);
+            holder.orderedDate.setText(DateTimeFormatter.ofPattern("MMM dd uuuu hh:mm a").format(date));
             holder.viewDetailsBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -1,6 +1,7 @@
 
 package com.example.basic.ui;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +26,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class OrderDetailsFragment extends Fragment {
     ProgressBar progressBar;
     JSONArray orderData = new JSONArray();
@@ -31,7 +37,7 @@ public class OrderDetailsFragment extends Fragment {
     Bundle bundle;
     Integer user_id;
     LinearLayout linearLayout;
-    TextView orderId, orderedDate, total_amount, gross_amount, shipping_charge, billing_address, shipping_address;
+    TextView orderId, orderedDate, order_status,total_amount,total_amount_top, gross_amount, shipping_charge, billing_address, shipping_address;
     RecyclerView recyclerView;
     BottomNavigationView navBar;
 
@@ -44,9 +50,11 @@ public class OrderDetailsFragment extends Fragment {
         orderedDate = root.findViewById(R.id.ordered_date);
         total_amount = root.findViewById(R.id.total_amount);
         gross_amount = root.findViewById(R.id.gross_amount);
+        total_amount_top= root.findViewById(R.id.order_total_amount);
         shipping_address = root.findViewById(R.id.shipping_address);
         billing_address = root.findViewById(R.id.billing_address);
         shipping_charge = root.findViewById(R.id.shipping_charge);
+        order_status = root.findViewById(R.id.order_status);
         recyclerView = root.findViewById(R.id.rvorderItem);
         bundle = this.getArguments();
         navBar= getActivity().findViewById(R.id.bottom_navigation);
@@ -54,6 +62,7 @@ public class OrderDetailsFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -68,18 +77,25 @@ public class OrderDetailsFragment extends Fragment {
                 String orderDate1 = category.getString("ordered_date");
                 Double total_amount1 = category.getDouble("total_amount");
                 Double shipping_charge1 = category.getDouble("shipping_charge");
+                String status = category.getString("status");
                 Double gross_amount1 = category.getDouble("gross_amount");
                 String billingAddress1 = category.getJSONObject("address").getString("billing");
                 String shippingAddress1 = category.getJSONObject("address").getString("shipping");
                 JSONArray orderDetails1= category.getJSONArray("orders_items");
                 OrderProductDetailsAdapter orderDetailsAdapter = new OrderProductDetailsAdapter(getContext(), category.getJSONArray("orders_items"));
+                DateTimeFormatter formatter =
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+                LocalDateTime date = LocalDateTime.parse(orderDate1, formatter);
                 orderId.setText("Order ID: #" + orderId1);
-                orderedDate.setText(orderDate1);
+                orderedDate.setText(DateTimeFormatter.ofPattern("MMM dd uuuu hh:mm a").format(date));
                 shipping_address.setText(shippingAddress1);
                 billing_address.setText(billingAddress1);
                 gross_amount.setText("Rs." + gross_amount1);
                 shipping_charge.setText("Rs. " + shipping_charge1);
                 total_amount.setText("Rs. " + total_amount1);
+                total_amount_top.setText("Total Rs."+total_amount1);
+                order_status.setText(status.toString());
+
                 recyclerView.setAdapter(orderDetailsAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 progressBar.setVisibility(View.GONE);

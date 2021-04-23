@@ -3,4 +3,5 @@
 
     <item name="group6" type="id"></item>
     <item name="group5" type="id"></item>
+    <item name="group7" type="id" />
 </resources>
