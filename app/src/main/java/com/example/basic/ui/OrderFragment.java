@@ -117,7 +117,7 @@ public class OrderFragment extends Fragment {
     public void gotoDetails(View v,Integer position)
     {
         try {
-            JSONObject orderDetails =(JSONObject) orderData.get(0);
+            JSONObject orderDetails =(JSONObject) orderData.get(position);
             Bundle bundle = new Bundle();
             bundle.putString("order_details",orderDetails.toString());
             Navigation.findNavController(getView()).navigate(R.id.nav_order_details,bundle);

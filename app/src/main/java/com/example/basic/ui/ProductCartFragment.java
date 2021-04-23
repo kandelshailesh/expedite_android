@@ -234,6 +234,7 @@ public class ProductCartFragment extends Fragment {
                             b.put("quantity", quantity1);
                             gross_amount = gross_amount - prev_quantity * price + quantity1 * price;
                         } else {
+                            b=new JSONObject();
                             b.put("product_id", product_id);
                             b.put("quantity", quantity1);
                             b.put("price", price);
