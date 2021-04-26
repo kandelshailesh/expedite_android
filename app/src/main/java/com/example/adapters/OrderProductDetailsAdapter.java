@@ -4,6 +4,7 @@ package com.example.adapters;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,27 @@ public class OrderProductDetailsAdapter extends RecyclerView.Adapter<OrderProduc
             String imageUrl = BuildConfig.API_URL+'/'+a.getJSONObject("product").getString("image");
             Integer quantity = a.getInt("quantity");
             holder.name.setText(name);
-            holder.price.setText("Rs."+price.toString());
+            double final_price=0.0;
+            Boolean discountable= a.getJSONObject("product").getBoolean("discountable");
+            Double discount_percent=0.0;
+            if(discountable) {
+                String discount_type = a.getJSONObject("product").getString("discount_type");
+                Double discount_amount= a.getJSONObject("product").getDouble("discount_amount");
+                Log.d("Discount",discount_type);
+                if(discount_type.equals("%")) {
+                    final_price=price-(0.01*discount_amount *price);
+                }
+                else
+                {
+                    final_price=price-discount_amount;
+                }
+                discount_percent=((price-final_price)/price)*100;
+            }
+            else
+            {
+                final_price=price;
+            }
+            holder.price.setText("Rs."+final_price);
             holder.quantity.setText("Qty: "+quantity.toString());
             Picasso.with(context).load(Uri.parse(imageUrl)).into(holder.imageView);
         } catch (JSONException e) {

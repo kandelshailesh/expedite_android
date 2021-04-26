@@ -6,16 +6,13 @@
 <!--        android:orderInCategory="100"-->
 <!--        android:title="@string/action_settings"-->
 <!--        app:showAsAction="never" />-->
-    <item
-        android:id="@+id/action_logout"
-        android:title="Logout"
-        ></item>
-    <item
-        android:title=""
-        app:showAsAction="always"
-        android:id="@+id/searchToolbar"
-        android:iconTintMode="add"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        android:icon="@drawable/ic_search">
-    </item>
+
+<!--    <item-->
+<!--        android:title=""-->
+<!--        app:showAsAction="always"-->
+<!--        android:id="@+id/searchToolbar"-->
+<!--        android:iconTintMode="add"-->
+<!--        app:actionViewClass="androidx.appcompat.widget.SearchView"-->
+<!--        android:icon="@drawable/ic_search">-->
+<!--    </item>-->
 </menu>

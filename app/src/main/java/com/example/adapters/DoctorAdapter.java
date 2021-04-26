@@ -56,14 +56,12 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.DoctorHold
             {
                 imageUrl= BuildConfig.API_URL+"/"+a.getString("image");
             }
-            String post = a.getString("description");
+            String post = a.getString("post");
             String phone = a.getString("phone");
-            String address= a.getString("address");
             String hospital= a.getString("hospital");
             holder.name.setText("Name: "+ name);
             holder.post.setText("Post: "+post);
             holder.phone.setText("Phone: "+phone);
-            holder.address.setText("Address: "+address);
             holder.hospital.setText("Hospital: "+hospital);
             Picasso.with(context).load(Uri.parse(imageUrl)).into(holder.doctorImg);
         } catch (JSONException e) {
@@ -85,6 +83,9 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.DoctorHold
             super(itemView);
             name =  itemView.findViewById(R.id.doctor_name);
             post= itemView.findViewById(R.id.doctor_post);
+            hospital=itemView.findViewById(R.id.doctor_hospital);
+            phone=itemView.findViewById(R.id.doctor_phone);
+            doctorImg=itemView.findViewById(R.id.doctor_image);
 
 
         }

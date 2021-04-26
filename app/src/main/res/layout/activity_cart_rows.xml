@@ -50,11 +50,34 @@
                             android:text="Price"></TextView>
                         <LinearLayout
                             android:layout_width="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12dp"
+                                android:textColor="@color/light_black"
+                                android:padding="1dp"
+                                android:id="@+id/product_cost1"
+                                android:text="Rs.1025"></TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12dp"
+                                android:textColor="@color/light_black"
+                                android:padding="1dp"
+                                android:id="@+id/product_discount1"
+                                android:text="30%"></TextView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingVertical="10dp"
                             android:id="@+id/linearCartrows"
                             >
+
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
@@ -91,6 +114,7 @@
                                 android:id="@+id/addBtn"
                                 android:src="@drawable/icon_plus">
                             </ImageButton>
+
                             </LinearLayout>
                             <LinearLayout
                                 android:gravity="right"
@@ -105,7 +129,9 @@
                                 android:background="@color/white"
                                 android:src="@drawable/icon_delete"></ImageButton>
                         </LinearLayout>
-                    </LinearLayout>
+                        </LinearLayout>
+
+
                     </LinearLayout>
                 </LinearLayout>
 

@@ -47,7 +47,7 @@ public class DoctorFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_doctor, container, false);
         result = root.findViewById(R.id.doctor_result);
-        recyclerView = root.findViewById(R.id.rvCart);
+        recyclerView = root.findViewById(R.id.rvDoctor);
         progressBar =root.findViewById(R.id.doctor_progress);
         return root;
     }

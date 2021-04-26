@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,7 @@ import retrofit2.Retrofit;
 
 public class ProductCartFragment extends Fragment {
     ImageView image;
-    TextView name, description, cost;
+    TextView name, description, cost,cost1,discount_percent;
     Bundle bundle;
     ImageButton addBtn, minusBtn;
     EditText quantity;
@@ -79,6 +80,8 @@ public class ProductCartFragment extends Fragment {
         name = view.findViewById(R.id.cart_pname);
         description = view.findViewById(R.id.cart_pdescription);
         cost = view.findViewById(R.id.cart_pprice);
+        cost1 = view.findViewById(R.id.product_cost1);
+        discount_percent=view.findViewById(R.id.product_discount1);
         addBtn = view.findViewById(R.id.addBtn);
         minusBtn = view.findViewById(R.id.minusBtn);
         quantity = view.findViewById(R.id.cart_quantity);
@@ -131,12 +134,24 @@ public class ProductCartFragment extends Fragment {
                         String name1 = bundle.get("name").toString();
                         String description1 = bundle.get("description").toString();
                         String imageUrl1 = bundle.get("imageUrl").toString();
-                        String cost1 = bundle.get("price").toString();
+                        String cost2 = bundle.get("price").toString();
+                        double discount_per= bundle.getDouble("discount_percent");
+                        String unit_price= bundle.get("unit_price").toString();
                         min_quantity = bundle.getInt("min_quantity");
                         max_quantity = bundle.getInt("max_quantity");
                         name.setText(name1);
-                        cost.setText("Rs " + cost1);
+                        cost.setText("Rs " + cost2);
                         description.setText(description1);
+                        if(discount_per>0)
+                        {
+                            cost1.setText(Html.fromHtml("<del>Rs." + unit_price + "</del>"));
+                            discount_percent.setText("-"+discount_per + "%");
+                        }
+                        else
+                        {
+                            cost1.setVisibility(View.GONE);
+                            discount_percent.setVisibility(View.GONE);
+                        }
                         Picasso.with(getView().getContext()).load(Uri.parse(imageUrl1)).into(image);
                         quantity.setText(Integer.toString(min_quantity));
                     }
