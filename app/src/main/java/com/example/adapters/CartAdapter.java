@@ -62,7 +62,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
             String imageUrl = BuildConfig.API_URL + '/' + a.getJSONObject("product").getString("image");
             Integer max_quantity = a.getJSONObject("product").getInt("max_quantity");
             Integer min_quantity = a.getJSONObject("product").getInt("min_quantity");
-            double final_price=0.0;
+             double final_price=0.0;
             Boolean discountable= a.getJSONObject("product").getBoolean("discountable");
             Double discount_percent=0.0;
             if(discountable) {
@@ -95,12 +95,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
                 holder.price1.setVisibility(holder.itemView.getRootView().GONE);
                 holder.discount1.setVisibility(holder.itemView.getRootView().GONE);
             }
+            final double cartPrice = final_price;
             holder.addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (Integer.parseInt(holder.productQuantity.getText().toString()) < max_quantity && Integer.parseInt(holder.productQuantity.getText().toString()) >= min_quantity) {
                         holder.productQuantity.setText(Integer.toString(Integer.parseInt(holder.productQuantity.getText().toString()) + 1));
-                        cartInterface.addtoCart(holder.itemView, position, Integer.parseInt(holder.productQuantity.getText().toString()), price);
+                        cartInterface.addtoCart(holder.itemView, position, Integer.parseInt(holder.productQuantity.getText().toString()), cartPrice);
                     } else {
                         Toast.makeText(context, "Maximum quantity limit ", Toast.LENGTH_SHORT).show();
                     }
@@ -112,9 +113,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
                 public void onClick(View view) {
                     if (Integer.parseInt(holder.productQuantity.getText().toString()) > min_quantity) {
                         holder.productQuantity.setText(Integer.toString(Integer.parseInt(holder.productQuantity.getText().toString()) - 1));
-                        cartInterface.addtoCart(holder.itemView, position, Integer.parseInt(holder.productQuantity.getText().toString()), price);
+                        cartInterface.addtoCart(holder.itemView, position, Integer.parseInt(holder.productQuantity.getText().toString()), cartPrice);
                     } else {
-                        Toast.makeText(context, "Mininum quantity limit", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Minimum quantity limit", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

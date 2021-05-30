@@ -17,7 +17,7 @@ import retrofit2.http.Query;
 
 public interface OrderInterface {
     @Headers("Content-Type: application/json")
-    @GET("api/backend/v1/orders")
+    @GET("api/backend/v1/orders_client")
     Call<ResponseBody> fetch(@Query("user_id") Integer  user_id);
 
     @Headers("Content-Type: application/json")

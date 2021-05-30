@@ -147,6 +147,7 @@ public class MainCartFragment extends Fragment implements CartInterface {
     @Override
     public void addtoCart(View v, Integer position, Integer quantity, Double price) {
         try {
+            Log.d("Final price",price.toString());
             v.findViewById(R.id.linearCartrows).setEnabled(false);
             JSONArray jsonArray = orderData.getJSONArray("orders_items");
             JSONObject b = (JSONObject) jsonArray.get(position);
